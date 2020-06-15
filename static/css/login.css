@@ -1,0 +1,71 @@
+/* login css */
+
+body {
+	font-family: sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+.login-frame {
+	position: absolute;
+	width: 300px;
+	height: 400px;
+	top: 40%;
+	left: 50%;
+	margin-top: -200px;
+	margin-left: -150px;
+    text-align: center;
+}
+
+#error-message {
+    height: 32px;
+    text-align: left;
+    padding: 0px 20px;
+}
+
+#error-message p {
+    font-size: 16px;
+    color: gray;
+}
+
+.login-frame h1 {
+    padding-left: 20px;
+    font-size: 24px;
+}
+
+.login-frame input {
+    display: block;
+    margin: 20px;
+    width: 280px;
+    padding: 6px 10px;
+    font-size: 20px;
+}
+
+.submit-frame {
+    margin: 20px 0px;
+    text-align: center;
+
+}
+
+.submit-frame input {
+    width: 250px;
+    height: 80px;
+    font-size: 48px;
+
+}
+
+.login-frame p {
+    margin: 20px 0px;
+    font-size: 12px;
+}
+
+#signUpBtn {
+    background-color: #22cc88;
+    color: #fff;
+    width: 300px;
+    margin-top: 60px;
+    border-radius: 3px;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}

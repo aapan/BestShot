@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "include/html_head.html" %}
+
+<body>
+
+<!-- loading -->
+<!--
+<div id="loading">
+    <div class="spinner-border" style="margin-right: 3px"></div>
+    <span>Loading...</span>
+</div>
+-->
+
+<!-- show upload image -->
+<div id="check-img-outer-frame" style="display: none;">
+    <div id="check-upper-bar">
+        <div id="cancel-upload">&times;</div>
+        <div><button id="upload-btn" type="submit">Next</button></div>
+    </div>
+    <div id="check-img-frame">
+        <img src="">
+    </div>
+    <div id="index-description-frame">
+        <textarea id="description" placeholder="Write a caption ..."></textarea>
+    </div>
+</div>
+
+{% include "include/head.html" %}
+
+<div id="container">
+
+  <!-- header-bar template -->
+  <div class="header-bar">
+    <h1>Give me your BestShot</h1>
+    <p>Upload the image to see the score .</p>
+    <div class="select-img-frame">
+      <form id="upload-from" action="" method="post" enctype="multipart/form-data">
+        <label class="select-img-btn">
+          {% csrf_token %}
+          {% if user.is_authenticated %}
+            <input id="select-img" type="file" name="img" style="display: none;">
+          {% else %}
+            <input type="reset" value="" onclick="remindWindow();" style="display: none;"/>
+          {% endif %}
+          <input id="hidden-description" type="text" name="description" style="display: none;">
+          <i class="far fa-image"></i> UPLOAD NOW
+          <input id="submitBtn" type="submit" style="display: none;">
+        </label>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+
+
+$(document).ready( function(){
+
+  var classList = {{ classList|safe }};
+  var userList = {{ userList|safe }};
+
+  // 搜尋時可選相關關鍵字
+  searchComplete(classList, userList);
+  // more選單下滑顯示Info, Tech
+  moreSlideDown();
+
+  // 若有選擇上傳檔案，呼叫readURL函數
+  $("#select-img").change(function(){
+    readURL(this);
+  });
+
+  // 若照片確定上傳，隱藏照片顯示框並傳送表單
+  $("#upload-btn").click(function(){
+    $(".container").attr("style", "opacity: 1;");
+    $("#check-img-outer-frame").attr("style", "display: none;");
+    var description = $("#description").val();
+    console.log(description);
+    $("#hidden-description").attr("value", description);
+    $("#submitBtn").click();
+  });
+
+  // 取消上傳照片
+  $("#cancel-upload").click( function(){
+      $(".container").attr("style", "opacity: 1;");
+      $("#check-img-outer-frame").attr("style", "display: none;");
+      $("#check-img-frame img").attr("src", "");
+  });
+
+
+});
+
+// 若有選擇上傳檔案，顯示上傳照片(check-img-outer-frame)並淡化背景
+function readURL(input) {
+
+  if(input.files && input.files[0]) {
+    $(".container").attr("style", "opacity: 0.5;");
+    $("#check-img-outer-frame").attr("style", "display: block;");
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      $("#check-img-frame img").attr("src", e.target.result);
+    }
+    reader.readAsDataURL(input.files[0]);
+  }
+
+}
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "include/html_head.html" %}
+
+<body>
+
+{% include "include/head.html" %}
+
+<div id="info-frame">
+    <div class="info-paragraph">
+        <h1>Keywording</h1>
+        <p>Every photo is automatically tagged with concrete objects and keywords to make your entire library searchable. It makes you easier and more straightforward to play on our website.</p>
+    </div>
+    <div class="info-paragraph">
+        <h1>Aesthetics</h1>
+        <p>We use our well-trained deep learning model to score photos based on the quality of your photo. Now, You can share your score with your friends and compete with others.</p>
+    </div>
+</div>
+
+
+<script>
+
+$(document).ready( function(){
+
+    // 下滑列表
+    $("#more ul").hide();
+    $("#more").hover( function () {
+        $(">ul:not(:animated)", this).slideDown("fast");
+    }, function(){
+        $(">ul", this).slideUp("fast");
+    });
+
+});
+
+</script>
+
+</body>
+
+</html>

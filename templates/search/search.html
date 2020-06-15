@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "include/html_head.html" %}
+
+<body>
+
+{% include "include/head.html" %}
+
+<div id="container">
+
+{#    <div class="search-result" style="padding-top: 200px;">#}
+{#        <h3 style="text-align: left;">Search Results: {{ result_class }}</h3>#}
+{#        {% for item in search_result %}#}
+{#        <div class="img-outer-frame">#}
+{#          <div class="img-frame">#}
+{#              <a href="/blog/{{ item.author.username }}/{{ item.id }}"><img src="{{ item.image.url }}" alt=""></a>#}
+{#              <div class="like-score">#}
+{#                <i class="far fa-chart-bar"></i> {{ item.cmpScore }}#}
+{#              </div>#}
+{#          </div>#}
+{#        </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
+
+    <div id="ranked-computer" style="padding-top: 100px;">
+        <h3 style="font-size: 24px; text-align: left; margin: 40px 0;" >Search Keyword： {{ result_class }}</h3>
+        {% for item in search_result %}
+        <div class="img-outer-frame" style="float: left;">
+          <div class="img-frame">
+              <a href="/blog/{{ item.author.username }}/{{ item.id }}"><img src="{{ item.image.url }}" alt=""></a>
+              <div class="score" style="display: none;" onclick="window.location.href='/blog/{{ item.author.username }}/{{ item.id }}';">
+                <i class="far fa-chart-bar"></i>&ensp;{{ item.cmpScore }}&ensp;&ensp;<i class="fas fa-heart"></i>&ensp;{{ item.like }}
+              </div>
+          </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<script>
+
+$(document).ready( function(){
+
+    var classList = {{ classList|safe }};
+    var userList = {{ userList|safe }};
+
+    // 搜尋時可選相關關鍵字
+    searchComplete(classList, userList);
+
+    moreSlideDown();
+
+});
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!-- computerScoreList -->
+
+<div class="score-rank">
+    <ul>
+        <li class="ranked-computer-li score-rank-chosen">Ranked by computer</li>
+        <li class="ranked-like-li">Ranked by like</li>
+    </ul>
+    <div id="ranked-computer">
+        {% for item in imgListOrderByCmpScore %}
+        <div class="img-outer-frame">
+          <div class="img-frame">
+              <a href="/blog/{{ item.author.username }}/{{ item.id }}"><img src="{{ item.image.url }}" alt=""></a>
+              <div class="score" onclick="window.location.href='/blog/{{ item.author.username }}/{{ item.id }}';">
+                <i class="far fa-chart-bar"></i>&ensp;{{ item.cmpScore }}&ensp;&ensp;<i class="fas fa-heart"></i>&ensp;{{ item.like }}
+              </div>
+          </div>
+        </div>
+        {% endfor %}
+    </div>
+
+{#    <div id="ranked-like" style="display: none;">#}
+{#        {% for item in imgListOrderByLike %}#}
+{#        <div class="img-outer-frame">#}
+{#          <div class="img-frame">#}
+{#              <a href="/blog/{{ item.author.username }}/{{ item.id }}"><img src="{{ item.image.url }}" alt=""></a>#}
+{#              <div class="score" onclick="window.location.href='/blog/{{ item.author.username }}/{{ item.id }}';">#}
+{#                <i class="far fa-chart-bar"></i>&ensp;{{ item.cmpScore }}&ensp;&ensp;<i class="fas fa-heart"></i>&ensp;{{ item.like }}#}
+{#              </div>#}
+{#          </div>#}
+{#        </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
+</div>

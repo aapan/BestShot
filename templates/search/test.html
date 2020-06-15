@@ -1,0 +1,13 @@
+## filename: main/search.html
+
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    {%  if target_content %}
+        {% for item in target_content %}
+            <li>{{ item.content }}</li>
+    {% else %}
+        <li>"No data"</li>
+    {% endif %}
+</body>
+</html>

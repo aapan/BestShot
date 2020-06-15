@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+{% include "include/html_head.html" %}
+
+<body>
+
+<form id="changeProPic-form" action="/changeProPic" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="username" value="{{ user.username }}">
+    <input id="choose-proPic" type="file" name="proPic" style="display: none;">
+    <input id="submitChangeProPic" type="submit" style="display: none;">
+</form>
+
+<div id="personal-file-setting" style="display: none;">
+    <form id="editPerFile" action="/blog/{{ user.username }}" method="post" onsubmit="return confirmPwd()">
+        {% csrf_token %}
+        <!-- close personal-file-setting -->
+        <div id="close-pfs">&times;</div>
+        <div class="personal-file-field">
+            <div class="field-left">
+                <div style="height: 50px; width: 50px;">
+                    {% if user.userprofile.proPicture %}
+                        <img style="height: 100%; width: 100%; border: 3px #fff solid; border-radius: 50%; object-fit: cover;" src="{{ user.userprofile.proPicture.url }}" alt="">
+                    {% else %}
+                        <img style="height: 100%; width: 100%; border: 3px #fff solid; border-radius: 50%; object-fit: cover;" src="{% static 'img/defualt-profile-picture.jpg' %}" alt="">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="field-right">
+                <h1>{{ user.username }}</h1>
+                <a href="javascript:void(0)" onclick="$('#choose-proPic').click();">Change Profile Photo</a>
+            </div>
+        </div>
+        <div class="personal-file-field">
+            <div class="field-left">
+                <label for="">Name</label>
+            </div>
+            <div class="field-right">
+                <input type="text" name="name" value="{{ user.userprofile.name }}">
+            </div>
+        </div>
+        <div class="personal-file-field">
+            <div class="field-left">
+                <label for="">Biography</label>
+            </div>
+            <div class="field-right">
+                <textarea name="biography" name="biography"></textarea>
+            </div>
+        </div>
+        <div class="personal-file-field">
+            <div class="field-left">
+            </div>
+            <div class="field-right">
+                <a onclick="showChangePwd();">change password</a>
+            </div>
+        </div>
+        <div id="change-password">
+            <div class="personal-file-field">
+                <div id="message"></div>
+                <div class="field-left">
+                    <label for="">Old Password</label>
+                </div>
+                <div class="field-right">
+                    <input id="oldPassword" type="password" name="oldPassword">
+                </div>
+            </div>
+            <div class="personal-file-field">
+                <div class="field-left">
+                    <label for="">New Password</label>
+                </div>
+                <div class="field-right">
+                    <input id="newPassword" type="password" name="newPassword">
+                </div>
+            </div>
+            <div class="personal-file-field">
+                <div class="field-left">
+                    <label for="">Confirm New Password</label>
+                </div>
+                <div class="field-right">
+                    <input id="confirmPassword" type="password" name="confirmPassword">
+                </div>
+            </div>
+        </div>
+        <input id="editPerBtn" type="submit" value="Submit">
+        <!-- <button id="editPerBtn">Submit</button> -->
+    </form>
+</div>
+
+<div class="container">
+
+{% include "include/head.html" %}
+
+<div class="personal-file-frame">
+    <div style="height: 150px; width: 150px;">
+{#        <span style="height: 150px; width: 150px;">#}
+        {% if user.userprofile.proPicture %}
+            <img style="height: 100%; width: 100%; border: 3px #fff solid; border-radius: 50%; object-fit: cover;" src="{{ user.userprofile.proPicture.url }}" alt="">
+        {% else %}
+            <img style="background-color: #fff; height: 100%; width: 100%; border: 3px #fff solid; border-radius: 50%; object-fit: cover;" src="{% static 'img/defualt-profile-picture.jpg' %}" alt="">
+        {% endif %}
+{#        </span>#}
+    </div>
+    <div id="personal-file-info">
+        <div id="account">
+            <h3>{{ user.username }}</h3>
+            <h3>{{ user.userProfile.proPicture.url }}</h3>
+        </div>
+        <div id="username"><span>{{ user.userprofile.name }}</span></div>
+        <div id="biography">
+            {% if user.userprofile.biography is not None %}
+               <p>{{ user.userprofile.biography|linebreaks }}</p>
+            {% endif %}
+        </div>
+        <div id="profile-setting">
+            <span>Edit <i class="fas fa-cog"></i></span>
+        </div>
+    </div>
+    <div id="">
+
+    </div>
+</div>
+
+<ul id="blog-display-list">
+    <li id="showUserImg"><i class="fab fa-buromobelexperte"></i>&ensp;post</li>
+    <li id="showLikeImg"><i class="fa fa-heart"></i>&ensp;like</li>
+    <li id="showHistoryImg"><i class="fa fa-history"></i>&ensp;history</li>
+</ul>
+
+<div>
+    <div id="userImg" class="score-rank">
+        {% for item in userImgList %}
+            <div class="img-outer-frame">
+              <div class="img-frame">
+                 <a href="/blog/{{ item.author.username }}/{{ item.id }}"><img src="{{ item.image.url }}" alt=""></a>
+              </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="likeImg" class="score-rank" style="display: none;">
+        {% for item in user.likeimgs.all %}
+            <div class="img-outer-frame">
+              <div class="img-frame">
+                <a href="/blog/{{ item.author.username }}/{{ item.id }}"><img src="{{ item.image.url }}" alt=""></a>
+              </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+    <div id="historyImg" class="score-rank" style="display: none;">
+        {% for item in history %}
+            <div class="img-outer-frame">
+              <div class="img-frame">
+                <a href="/blog/{{ item.author.username }}/{{ item.id }}"><img src="{{ item.image.url }}" alt=""></a>
+              </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+</div>
+
+<script>
+
+var isShowChangePwd = false;
+
+$(document).ready(function(){
+
+    var classList = {{ classList|safe }};
+    var userList = {{ userList|safe }};
+
+    // 搜尋時可選相關關鍵字
+    searchComplete(classList, userList);
+
+
+    $("#showUserImg").click( function () {
+        var showImg = $("#userImg");
+        $(showImg).siblings().attr("style", "display: none");
+        $(showImg).attr("style", "display: block");
+    });
+
+    $("#showLikeImg").click( function () {
+        var showImg = $("#likeImg");
+        $(showImg).siblings().attr("style", "display: none");
+        $(showImg).attr("style", "display: block");
+    });
+
+    $("#showHistoryImg").click( function () {
+        var showImg = $("#historyImg");
+        $(showImg).siblings().attr("style", "display: none");
+        $(showImg).attr("style", "display: block");
+    });
+
+    $("#close-pfs").click( function(){
+        $("#personal-file-setting").hide();
+    });
+
+    $("#profile-setting").click( function(){
+       $("#personal-file-setting").show();
+    });
+
+    $("#change-password").hide();
+
+
+    $("#choose-proPic").change(function(){
+        changeProPic();
+    });
+
+});
+
+function showChangePwd () {
+
+    if(!isShowChangePwd){
+        $("#change-password").slideDown();
+        isShowChangePwd = true;
+    } else {
+        $("#change-password").slideUp();
+        isShowChangePwd = false;
+    }
+
+}
+
+function confirmPwd () {
+
+    var passConfirm =false;
+
+    if(isShowChangePwd){
+
+        $.ajax({
+            url:"/ajax_confirmPwd",
+            type: "GET",
+            async: false,
+            data: {
+                "username": "{{ user.username }}",
+                "oldPwd" : $("input[name='oldPassword']").val(),
+                "newPwd" : $("input[name='newPassword']").val(),
+                "confirmPwd": $("input[name='confirmPassword']").val()
+            },
+            success: function (data) {
+               if(data['message'] == "success"){
+                   console.log("message == success");
+                   passConfirm = true;
+                   console.log("after success: " + passConfirm);
+                   // $("#editPerFile").submit();
+               } else {
+                   $("#message").html(
+                       '<div class="personal-file-field" style="text-align: center;">' +
+                       '<p style="color: red;">' + data['message'] + '</p>' +
+                       '</div>');
+
+                   passConfirm = false;
+               }
+            },
+            error: function () {
+               console.log("confirmPwd ajax error");
+            }
+        });
+
+        console.log("passConfirm: " + passConfirm);
+        return passConfirm;
+
+    } else {
+        return true;
+    }
+
+}
+
+function changeProPic() {
+    console.log("submit form");
+    $("#changeProPic-form").submit();
+}
+
+
+</script>
+
+
+</body>
+</html>

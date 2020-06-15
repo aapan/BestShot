@@ -1,0 +1,10 @@
+{% for item in imgList %}
+<div class="img-outer-frame">
+  <div class="img-frame">
+      <a href="/blog/{{ item.author.username }}/{{ item.id }}"><img src="{{ item.image.url }}" alt=""></a>
+      <div class="score" style="display: none;" onclick="window.location.href='/blog/{{ item.author.username }}/{{ item.id }}';">
+        <i class="far fa-chart-bar"></i>&ensp;{{ item.cmpScore }}&ensp;&ensp;<i class="fas fa-heart"></i>&ensp;{{ item.like }}
+      </div>
+  </div>
+</div>
+{% endfor %}

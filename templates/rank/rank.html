@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "include/html_head.html" %}
+
+<body>
+
+<!-- loading -->
+<!--
+<div id="loading">
+    <div class="spinner-border" style="margin-right: 3px"></div>
+    <span>Loading...</span>
+</div> -->
+
+{% include "include/head.html" %}
+
+<div id="container">
+
+    <div class="score-rank" style="padding-top: 80px;">
+        <ul style="vertical-align: bottom;">
+            <li class="ranked-computer-li score-rank-chosen" onclick="ajax_changeImgType('computer');">Ranked by computer</li>
+            <li class="ranked-like-li" onclick="ajax_changeImgType('like');">Ranked by like</li>
+            <li>
+                <span style="font-size: 20px;">&ensp;TOP</span>
+                <!-- Rounded switch -->
+                <label class="switch">
+                  <input id="topSort" type="checkbox" onclick="ajax_changeImgType(null);">
+                  <span class="slider round"></span>
+                </label>
+            </li>
+        </ul>
+
+        <div id="ranked-computer">
+        </div>
+
+</div>
+
+</div>
+
+<script>
+
+var startImgNum = -12;
+var sortType = "high";
+var scoreType = "computer";
+
+$(document).ready(function () {
+
+    var classList = {{ classList|safe }};
+    var userList = {{ userList|safe }};
+
+    // 搜尋時可選相關關鍵字
+    searchComplete(classList, userList);
+
+    ajax_addImg();
+
+    /*
+    setTimeout( function () {
+        $("#loading").hide();
+        $("#container").css("display", "block");
+    }, 1000); */
+
+    {#$("#loading").hide();#}
+
+    // 瀑布式顯示照片（每當網頁下滑至底部時顯示更多照片）
+    var last = null;
+    $(window).scroll(function() {
+        last = $("body").height() - $(window).height() + 100;
+        if($(window).scrollTop() >= last){
+
+            // ajax
+            setTimeout( function () {
+               ajax_addImg("{{ scoreType }}");
+            }, 1000);
+        }
+
+    });
+
+    moreSlideDown();
+    //searchComplete();
+
+    // 照片分類顯示(ranked by computer score or like)
+    $(".ranked-computer-li").click( function(){
+        $(".ranked-like-li").removeClass("score-rank-chosen");
+        $(this).addClass("score-rank-chosen");
+    });
+    $(".ranked-like-li").click( function(){
+        $(".ranked-computer-li").removeClass("score-rank-chosen");
+        $(this).addClass("score-rank-chosen");
+    });
+
+});
+
+function ajax_addImg(){
+
+    startImgNum = startImgNum + 12;
+    console.log(startImgNum);
+
+    $.ajax({
+        url:"/ajax_addImg",
+        type: "GET",
+        data: {
+            "scoreType" : scoreType,
+            "sortType": sortType,
+            "startImgNum": startImgNum
+        },
+        success: function (data) {
+            $("#ranked-computer").append(data);
+            // 照片分數顯示設定
+            let $scoreObj = $(".score");
+            $(".img-frame").hover( function(){
+                $(this).find($scoreObj).show();
+            }, function(){
+                $(this).find($scoreObj).hide();
+            });
+        },
+        error: function () {
+            alert("error");
+        }
+    });
+
+}
+
+function ajax_changeImgType(inputScoreType){
+
+    if(inputScoreType!=null){
+        scoreType = inputScoreType;
+    }
+
+    // 如果由低到高排序
+    if($("#topSort").is(":checked")) {
+        sortType = "low";
+    } else {
+        sortType = "high";
+    }
+    console.log("sortType: " + sortType);
+
+    startImgNum = 0;
+
+    $.ajax({
+       url:"/ajax_addImg",
+       type: "GET",
+        data: {
+            "sortType" : sortType,
+            "scoreType" : scoreType,
+            "startImgNum": startImgNum
+        },
+        success: function (data) {
+            $("#ranked-computer").html(data);
+            // 照片分數顯示設定
+            let $scoreObj = $(".score");
+            $(".img-frame").hover( function(){
+                $(this).find($scoreObj).show();
+            }, function(){
+                $(this).find($scoreObj).hide();
+            });
+        },
+        error: function () {
+            alert("error");
+        }
+    });
+}
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "include/html_head.html" %}
+
+<body>
+
+<!-- loading -->
+<div id="loading" style="display: none;">
+    <div class="spinner-border" style="margin-right: 3px"></div>
+    <span>Loading...</span>
+</div>
+
+{% include "include/head.html" %}
+
+<div style="padding:  0; margin: 0;">
+
+  <!-- upload-image-display -->
+  <div class="current-image-frame">
+    <div class="display-image-outer-frame">
+      <div class="display-image-frame">
+        <img src="{{ currentImg.image.url }}" alt="">
+        <!-- <img src="" alt=""> -->
+      </div>
+    </div>
+    <div class="image-detail-frame">
+      <!-- <div class="image-detail"> -->
+      <div id="image-content">
+
+        <div class="image-score-frame">
+          <div class="image-score"><i class="far fa-chart-bar"></i>&ensp;{{ currentImg.cmpScore }}</div>
+          {%  if isLike %}
+            <div class="image-like"><i class="fas fa-heart" style="color: #FF338D;"></i>&ensp;{{ currentImg.like }}</div>
+          {% else %}
+            <div class="image-like"><i class="far fa-heart" style="color: #FF338D;"></i>&ensp;{{ currentImg.like }}</div>
+          {% endif %}
+        </div>
+
+          <div class="image-classification-frame">
+              {% for item in currentImg.label %}
+                   <a href="/search?keyword={{ item }}">#{{item}}</a>
+              {% endfor %}
+          </div>
+
+          <div class="image-creator"><a href="/blog/{{ currentImg.author }}">{{ currentImg.author }}</a></div>
+          <br>
+          <div class="image-description-frame">{{ currentImg.description }}</div>
+
+      </div>
+
+          <div class="comment-list-frame">
+              {% for item in currentImg.comments.all %}
+                  <div class="comment-list">
+                    <div class="comment-author"><a href="/blog/{{ item.author }}">{{ item.author }}</a></div>&ensp;<div class="comment-content">{{ item.content }}</div>
+                  </div>
+              {% endfor %}
+          </div>
+          <div class="current-comment-frame">
+            <textarea id="current-comment" placeholder="comment..." style="height: 18px;"></textarea>
+          </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+$(document).ready(function(){
+
+    /*
+    setTimeout( function () {
+        $("#loading").hide();
+        $("#container").css("display", "block");
+    }, 3000); */
+
+    moreSlideDown();
+
+    // click like
+    $('.image-like').click(function () {
+
+        $.ajax({
+            url: "/ajax_like",
+            type: "GET",
+            data: {
+                "username" : "{{ request.user.username }}",
+                "imgID" : "{{ currentImg.id }}"
+            },
+            success: function (data) {
+                if(data['isLike']){
+                    $('.image-like').html('<i class="fas fa-heart" style="color: #FF338D;"></i>&ensp;' + data['like-score']);
+                } else {
+                    $('.image-like').html('<i class="far fa-heart" style="color: #FF338D;"></i>&ensp;' + data['like-score']);
+                }
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+
+    });
+
+    // add comment
+    $("#current-comment").keypress(function (event) {
+        var $content = this.value;
+        if (event.keyCode == 13) {
+
+            $.ajax({
+                url: "/ajax_comment",
+                type: "GET",
+                data: {
+                    "username": "{{ request.user.username }}",
+                    "imgID": "{{ currentImg.id }}",
+                    "content": $content,
+                },
+                success: function (data) {
+                    $(".comment-list-frame").append(
+                        '<div class="comment-list">' +
+                        '<div class="comment-author">' + data['author'] + '</div>&ensp;' +
+                        '<div class="comment-content">' + data['content'] + '</div>' +
+                        '</div>');
+                    $("#current-comment").val("");
+                },
+                error: function () {
+
+                }
+            })
+        }
+    });
+
+
+    // 設定自動更新相片留言
+    var updateCommentReturn =  updateComment();
+    if(updateCommentReturn){
+        setInterval( function(){
+            updateComment();
+        // 設定每10秒更新一次(10000毫秒)
+        }, 10000);
+    }
+
+
+});
+
+function init(){
+    setCommentListHeight();
+}
+
+function updateComment(){
+    $.ajax({
+        url: "/ajax_commentUpdate",
+        type: "GET",
+        data: {
+            "imgID": "{{ currentImg.id }}",
+        },
+        success: function(data){
+            console.log('success');
+            $("#comment-list-frame").html(data['commentListHtml']);
+        },
+        error: function(){
+            console.log('updateComment error');
+        }
+    });
+
+    return true;
+}
+
+function setCommentListHeight(){
+
+    // idf: image-detail-frame
+    var idfHeight = $(".image-detail-frame").height();
+    var imgContentHieght = $("#image-content").height();
+    // clf: comment-list-frame
+    var clfHeight = idfHeight - imgContentHieght - 46;
+    $(".comment-list-frame").css("height", clfHeight);
+
+}
+
+
+</script>
+
+</body>
+</html>

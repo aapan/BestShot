@@ -1,0 +1,53 @@
+<!-- navbar.html -->
+
+<div class="nav-bar">
+    <ul>
+      <li id="title">
+          <a href="/main">BestShot</a>
+      </li>
+      <li class="li-hover">
+        <a href="/main">Home</a>
+      </li>
+      <li class="li-hover">
+        <a href="/rank">Rank</a>
+      </li>
+    {% if user.is_authenticated %}
+      <li class="li-hover">
+        <a href="/blog/{{ request.user.username }}">Blog</a>
+      </li>
+    {% endif %}
+      <li class="search ">
+          <form action="/search" method="get">
+            {% csrf_token %}
+            <div class="autocomplete">
+                <input id="keyword" type="text" name="keyword" placeholder="Search" autocomplete="off"><span onclick="$('#searchKeyword').click();" style="cursor: pointer; color: gray;"><i class="fas fa-search"></i></span>
+                <div class="input-group-append"></div>
+            </div>
+            <input id="searchKeyword" type="submit" name="submit" value="submit" style="display: none;">
+          </form>
+      </li>
+      {% if user.is_authenticated %}
+          <li id="last-li" class="right-float li-hover">
+          <a href="/logout">Sign out</a>
+      </li>
+      {% else %}
+          <li id="last-li" class="right-float li-hover">
+          <a href="/signUp">Sign up</a>
+      </li>
+          <li class="right-float li-hover">
+          <a href="/login">Sign in</a>
+      </li>
+      {% endif %}
+
+      <!--
+      <li id="more" class="right-float" style="display: none;">
+          <a href="">More</a>
+          <ul>
+              <li><a href="/info" class="li-hover">Info</a></li>
+              <li><a href="/tech" class="li-hover">Tech</a></li>
+          </ul>
+      </li>
+      -->
+
+    </ul>
+</div>

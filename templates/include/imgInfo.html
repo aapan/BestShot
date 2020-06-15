@@ -1,0 +1,46 @@
+<div class="current-image-frame">
+    <div class="display-image-outer-frame">
+      <div class="display-image-frame">
+        <img src="{{ currentImg.image.url }}" alt="">
+        <!-- <img src="" alt=""> -->
+      </div>
+    </div>
+    <div class="image-detail-frame">
+      <!-- <div class="image-detail"> -->
+      <div id="image-content">
+
+        <div class="image-score-frame">
+          <div class="image-score"><i class="far fa-chart-bar"></i>&ensp;{{ currentImg.cmpScore }}</div>
+          {%  if isLike %}
+            <div class="image-like"><i class="fas fa-heart" style="color: #FF338D;"></i>&ensp;{{ currentImg.like }}</div>
+          {% else %}
+            <div class="image-like"><i class="far fa-heart" style="color: #FF338D;"></i>&ensp;{{ currentImg.like }}</div>
+          {% endif %}
+        </div>
+
+          <div class="image-classification-frame">
+              <div>class1</div>
+              <div>class2</div>
+              <div>class3</div>
+              <div>class4</div>
+          </div>
+
+          <div class="image-creator"><a href="">{{ currentImg.author }}</a></div>
+
+          <div class="image-description-frame">{{ currentImg.description }}</div>
+
+      </div>
+
+          <div class="comment-list-frame">
+              {% for item in currentImg.comments.all %}
+                  <div class="comment-list">
+                    <div class="comment-author">{{ item.author }}</div>&ensp;<div class="comment-content">{{ item.content|linebreaks }}</div>
+                  </div>
+              {% endfor %}
+          </div>
+          <div class="current--frame">
+            <textarea id="current-" placeholder="..." style="height: 18px;"></textarea>
+          </div>
+    </div>
+
+</div>

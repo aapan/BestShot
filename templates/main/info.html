@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include "include/html_head.html" %}
+
+<body>
+
+{% include "include/head.html" %}
+
+<div id="info-frame">
+    <div class="info-paragraph">
+        <h1>About The Website</h1>
+        <p>Maybe you’d encountered this situation, after taking a photo about your favorite theme, while wishing to ask somebody about how it is, but finally didn’t know who to. If then, our website is the best choice for you.</p>
+    </div>
+    <div class="info-paragraph">
+        <h1>Upload Your Fascinating Picture and obtain Assess Score via Our Professional AI model</h1>
+        <p>Simply press the “UPLOAD NOW” button on our home page and select the photo you want to seeking advice, then making some description about it, last, press “Next” bottom on the bottom right and we’ll give you a score from the AI model we train.</p>
+    </div>
+    <div class="info-paragraph">
+        <h1>Managing Your own Blog</h1>
+        <p>After uploading photos to our website, you can find them appear in your blog, so you can manage them and reply to the comments others leaves about your photos. Also, you can view all the pictures that you had gave them a like in the past, just click the “heart” icon in the blog page. Moreover, you’ll see all the user who are following you by clicking the “Followers” button and the user you’re following by clicking the “Following” button. Every instances in the follower and following list is linkable, i.e., you can go that user’s blog by clicking it’s username.</p>
+    </div>
+    <div class="info-paragraph">
+        <h1>Searching for the Theme or the User you’re Interesting in</h1>
+        <p>First, click the “Search for” drop-down menu on the top left of our home page, then choice “Theme” or “User” according to your purpose.</p>
+        <p>Type in keyword about the theme you want to browse in the search bar left to the “Search for” drop -down menu if you’re going to find the picture in the keyword you key in, and we’ll show all the pictures in the theme you’re interesting.</p>
+        <p>In the results page, you can choice different method to sort the pictures. e.g. Score from high to low, public date from recently to early,…. Just press different button on the top of the page then your get different sort.</p>
+        <p>Else if, your purpose is to finding a user and it’s photo, input the user’s id in the search bar, then we’ll redirect you to that user’s blog page. You can browse all photo that user upload and the photo that user like in it’s blog. Also, you can follow that user via the button “Follow” under the user’s id in the blog page. Once you follow someone, the user will append in the following list in your blog. Next time, when you want to find that user, you can go to your following list to find and link to it’s blog.</p>
+    </div>
+    <div class="info-paragraph">
+        <h1>Viewing the picture that is most popular or having the highest Score lately</h1>
+        <p>The “Rank” button on the top of our home page will lead you to a page that display the top 50 pictures order by score and order by popularity.</p>
+    </div>
+    <div class="info-paragraph">
+        <h1>Sign in or Sign up</h1>
+        <p>You need to sign in for getting our assessment about picture, if you already having an account, click “Sign in”. If you’re new here, click “Sign up” to create an new account.</p>
+    </div>
+</div>
+
+
+
+<script>
+
+$(document).ready( function(){
+
+    // 下滑列表
+    $("#more ul").hide();
+    $("#more").hover( function () {
+        $(">ul:not(:animated)", this).slideDown("fast");
+    }, function(){
+        $(">ul", this).slideUp("fast");
+    });
+
+});
+
+</script>
+
+</body>
+</html>
