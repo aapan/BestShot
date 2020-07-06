@@ -24,16 +24,21 @@ def main(request):
         username = request.user.username
         loginUser = User.objects.get(username=username)
 
-    randCmpScore = random.randint(5, 9)
-
     if request.method == 'POST':
         imgID = time.strftime('%Y%m%d%H%M%S') + str(random.randint(1, 9999))
+        # imgID = username + '_' + str(len(loginUser.imgs))
         description = request.POST.get('description', '')
+        # upload_image = request.FILES.get('img')
+        randCmpScore = random.randint(50, 95) / 10
         img = Img(id=imgID, image=request.FILES.get('img'), author=loginUser, cmpScore=randCmpScore, like=0,
                   description=description)
+                
         img.save()
-        img.cmpScore = assessPicture(str(img.image))  
+
+        # stop use Google API
         # img.label = getLabel(str(img.image))  
+        cmpScore = assessPicture(str(img.image))
+        img.cmpScore = cmpScore
         img.save()
 
         if img.label != None:
@@ -257,6 +262,15 @@ def imgDetail(request, user, imgID):
     }
 
     return render(request, 'blog/imgDetail.html', context)
+
+def delImage(request):
+    imgID = request.POST.get('imgID')
+    img = Img.objects.get(id=imgID)
+    print("delete img - " + imgID)
+    img.delete()
+
+    return HttpResponseRedirect('/rank/')
+
 
 
 def info(request):

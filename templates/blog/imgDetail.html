@@ -27,6 +27,14 @@
       <!-- <div class="image-detail"> -->
       <div id="image-content">
 
+        <form action="{% url 'delImage' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="imgID" value="{{ currentImg.id }}" style="display: none;">
+            <input id="submitDelImg" type="submit" style="display: none;">
+        </form>
+
+        <div id="delete-img" onclick="$('#submitDelImg').click()">&times;</div>
+
         <div class="image-score-frame">
           <div class="image-score"><i class="far fa-chart-bar"></i>&ensp;{{ currentImg.cmpScore }}</div>
           {%  if isLike %}
@@ -36,15 +44,15 @@
           {% endif %}
         </div>
 
-          <div class="image-classification-frame">
-              {% for item in currentImg.label %}
-                   <a href="/search?keyword={{ item }}">#{{item}}</a>
-              {% endfor %}
-          </div>
+        <div class="image-classification-frame">
+            {% for item in currentImg.label %}
+                <a href="/search?keyword={{ item }}">#{{item}}</a>
+            {% endfor %}
+        </div>
 
-          <div class="image-creator"><a href="/blog/{{ currentImg.author }}">{{ currentImg.author }}</a></div>
-          <br>
-          <div class="image-description-frame">{{ currentImg.description }}</div>
+        <div class="image-creator"><a href="/blog/{{ currentImg.author }}">{{ currentImg.author }}</a></div>
+        <br>
+        <div class="image-description-frame">{{ currentImg.description }}</div>
 
       </div>
 
@@ -126,6 +134,27 @@ $(document).ready(function(){
             })
         }
     });
+
+    $("#delete-img").click(function () {
+        $.ajax({
+            url: "/ajax_comment",
+            type: "POST",
+            data: {
+                "username": "{{ request.user.username }}",
+                "imgID": "{{ currentImg.id }}",
+                "content": $content,
+            },
+            success: function (data) {
+                $(".comment-list-frame").append(
+                    '<div class="comment-list">' +
+                    '<div class="comment-author">' + data['author'] + '</div>&ensp;' +
+                    '<div class="comment-content">' + data['content'] + '</div>' +
+                    '</div>');
+                $("#current-comment").val("");
+            }
+        })
+    });
+
 
 
     // 設定自動更新相片留言

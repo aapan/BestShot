@@ -462,6 +462,14 @@ a {
 	cursor: pointer;
 }
 
+#delete-img {
+	position: absolute;
+	/* top: 20px; */
+	right: 20px;
+	cursor: pointer;
+	font-size: 24px;
+}
+
 #signUpBtn {
 	height: 40px;
 	width: 80px;

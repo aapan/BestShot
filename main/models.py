@@ -45,12 +45,6 @@ class Comment(models.Model):
 
 
 class UserProfile(models.Model):
-    # auth User default field
-    # username
-    # password
-    # first_name
-    # last_name
-
     userProfile = models.OneToOneField(User, on_delete=models.CASCADE, related_name='userprofile')
     name = models.CharField(max_length=20, null=False)
     email = models.CharField(max_length=30, null=True)

@@ -20,7 +20,7 @@ from django.conf import settings
 from django.contrib.auth import views
 from django.conf.urls.static import static
 from main.views import main, login, logout, blog, imgDetail, ajax_like, ajax_comment, signUp, rank, \
-    ajax_commentUpdate, info, tech, ajax_addImg, ajax_confirmPwd, ajax_changeProPic,search
+    ajax_commentUpdate, info, tech, ajax_addImg, ajax_confirmPwd, ajax_changeProPic, search, delImage
 
 from main.views import UserView
 
@@ -44,6 +44,8 @@ urlpatterns = [
   path('ajax_confirmPwd', ajax_confirmPwd),
   # imgDetail
   path('blog/<str:user>/<int:imgID>', imgDetail),
+  # delete image
+  path('delImage', delImage, name='delImage'),
   # 新增commend
   # path('blog/addComment', addComment),
   # 按讚ajax
