@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/Users/panshunchien/Desktop/A04_final_project_code/GraduateProject/config/premium-axis-256811-678f390a3cb9.json'
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

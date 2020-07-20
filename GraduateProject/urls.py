@@ -20,7 +20,8 @@ from django.conf import settings
 from django.contrib.auth import views
 from django.conf.urls.static import static
 from main.views import main, login, logout, blog, imgDetail, ajax_like, ajax_comment, signUp, rank, \
-    ajax_commentUpdate, info, tech, ajax_addImg, ajax_confirmPwd, ajax_changeProPic, search, delImage
+    ajax_commentUpdate, info, tech, ajax_addImg, ajax_confirmPwd, ajax_changeProPic, search, delImage, \
+    random_imgLike
 
 from main.views import UserView
 
@@ -64,6 +65,8 @@ urlpatterns = [
   path('logout/', logout),
   # 註冊
   path('signUp/', signUp),
+
+  path('secret/randomImgLike/', random_imgLike),
 
   path('main/UserList', UserView.as_view())
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

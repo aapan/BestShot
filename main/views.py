@@ -36,7 +36,7 @@ def main(request):
         img.save()
 
         # stop use Google API
-        # img.label = getLabel(str(img.image))  
+        img.label = getLabel(str(img.image))  
         cmpScore = assessPicture(str(img.image))
         img.cmpScore = cmpScore
         img.save()
@@ -408,6 +408,19 @@ def search(request):
     }
 
     return render(request, 'search/search.html', context)
+
+
+def random_imgLike(request):
+    imgs = Img.objects.all()
+
+    for img in imgs:
+        random_score = random.randint(3, 49)
+        img.like = random_score
+
+        print(img.id + " like: " + str(img.like))
+        img.save()
+
+    return HttpResponseRedirect('/main/')
 
 
 class UserView(TemplateView):

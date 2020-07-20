@@ -181,11 +181,7 @@ function updateComment(){
             "imgID": "{{ currentImg.id }}",
         },
         success: function(data){
-            console.log('success');
             $("#comment-list-frame").html(data['commentListHtml']);
-        },
-        error: function(){
-            console.log('updateComment error');
         }
     });
 
